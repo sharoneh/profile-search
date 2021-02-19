@@ -1,15 +1,11 @@
 <template>
-  <div>
+  <div class="page">
     <h1>Users List</h1>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return { teste: [] }
-  },
-}
+export default {}
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>
