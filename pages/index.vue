@@ -105,6 +105,14 @@ export default {
       }
     }
   }
+
+  @media screen and (max-width: 768px) {
+    padding: 15px;
+
+    .list-container {
+      margin: 0;
+    }
+  }
 }
 
 ::-webkit-scrollbar {

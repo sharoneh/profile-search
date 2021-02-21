@@ -42,12 +42,23 @@ export default {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.24);
   border-radius: 3px;
   display: flex;
-  margin-bottom: 21px;
+  /* margin-bottom: 21px; */
+  margin-bottom: 1.3125em;
   overflow: hidden;
+  font-size: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.85rem;
+
+    .user-content .user-info .main-info {
+      flex-direction: column;
+    }
+  }
 
   .user-avatar {
     background-color: rgba(0, 0, 0, 0.25);
-    width: 134px;
+    /* width: 134px; */
+    width: 8.375em;
     flex-shrink: 0;
     background-size: contain;
     background-position: bottom;
@@ -65,7 +76,8 @@ export default {
     }
 
     .user-info {
-      padding: 10px 10px 1.5px 27px;
+      /* padding: 10px 10px 1.5px 27px; */
+      padding: 10px 10px 1.5px 1.6875em;
       position: relative;
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
@@ -75,8 +87,10 @@ export default {
 
         .name {
           font-weight: normal;
-          font-size: 24px;
-          line-height: 32px;
+          /* font-size: 24px; */
+          /* line-height: 32px; */
+          font-size: 1.5em;
+          line-height: 1.3333em;
           color: rgba(0, 0, 0, 0.87);
         }
       }
@@ -85,8 +99,10 @@ export default {
       .address,
       .email {
         color: rgba(0, 0, 0, 0.543846);
-        font-size: 14px;
-        line-height: 20px;
+        /* font-size: 14px; */
+        /* line-height: 20px; */
+        font-size: 0.875em;
+        line-height: 1.4286em;
       }
 
       .title {
@@ -106,10 +122,13 @@ export default {
       width: 100%;
       text-transform: uppercase;
       font-weight: 500;
-      font-size: 14px;
-      line-height: 16px;
+      /* font-size: 14px; */
+      /* line-height: 16px; */
+      font-size: 0.875em;
+      line-height: 1.1429em;
       text-align: left;
-      padding: 14.5px 32px 19px;
+      /* padding: 14.5px 32px 19px; */
+      padding: 1em 2.2857em 1.3571em;
       color: #009688;
       cursor: pointer;
       transition: ease-out 0.3s;
@@ -124,6 +143,15 @@ export default {
         background-color: rgba(0, 0, 0, 0.2);
         transition: ease-out 0.3s;
       }
+    }
+  }
+
+  @media screen and (max-width: 425px) {
+    flex-direction: column;
+
+    .user-avatar {
+      width: 100%;
+      min-height: 120px;
     }
   }
 }
