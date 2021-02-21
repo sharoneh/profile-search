@@ -14,7 +14,6 @@ export default {
       { hid: 'description', name: 'description', content: '' },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'preconnect',
         href: 'https://fonts.gstatic.com'
@@ -50,4 +49,10 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  // Deployment
+  target: 'static',
+  router: {
+    base: '/profile-search/'
+  }
 }
