@@ -16,6 +16,7 @@
             v-for="user in usersSlice"
             :key="`user#${user.email}`"
             :user="user"
+            :search-str="searchStr"
           />
 
           <infinite-loading
@@ -59,9 +60,10 @@ export default {
       let stopIndex = 0
 
       usersArr.some((user, index) => {
-        const containsSearchStr = Object.keys(user).some((key) =>
-          user[key].toLowerCase().includes(this.searchStr.toLowerCase())
-        )
+        const containsSearchStr = Object.keys(user).some((key) => {
+          if (key === 'avatar') return false
+          return user[key].toLowerCase().includes(this.searchStr.toLowerCase())
+        })
 
         if (containsSearchStr) {
           newSlice.push(user)

@@ -8,14 +8,17 @@
     <div class="user-content">
       <div class="user-info">
         <div class="main-info">
-          <h2 class="name">{{ user.name }}</h2>
+          <h2 class="name" v-html="highlight(user.name)" />
 
-          <p class="email">{{ user.email }}</p>
+          <p class="email" v-html="highlight(user.email)" />
         </div>
 
-        <h3 class="title">{{ user.title }}</h3>
+        <h3 class="title" v-html="highlight(user.title)" />
 
-        <address class="address">{{ user.address }}, {{ user.city }}</address>
+        <address
+          class="address"
+          v-html="highlight(`${user.address}, ${user.city}`)"
+        />
       </div>
 
       <button class="action">Mark as suitable</button>
@@ -30,6 +33,22 @@ export default {
     user: {
       type: Object,
       required: true,
+    },
+    searchStr: {
+      type: String,
+      required: true,
+    },
+  },
+  methods: {
+    highlight(itemToHighlight) {
+      if (!this.searchStr) {
+        return itemToHighlight
+      }
+
+      return itemToHighlight.replace(
+        new RegExp(this.searchStr, 'ig'),
+        (match) => `<mark>${match}</mark>${match.replace(match, '')}`
+      )
     },
   },
 }
@@ -63,6 +82,10 @@ export default {
     * {
       margin: 0;
       cursor: default;
+    }
+
+    mark {
+      background-color: yellow;
     }
 
     .user-info {
