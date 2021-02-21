@@ -1,5 +1,6 @@
 # Profile Search App
 Profile search app using [Nuxt](https://nuxtjs.org/).
+This application is deployed on [Heroku](https://bravado-profile-search.herokuapp.com/).
 
 ## Build Setup
 
