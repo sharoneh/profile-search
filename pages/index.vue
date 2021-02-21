@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <div class="list-container">
+    <div class="content-container">
       <div class="input-wrapper">
         <input
           v-model="searchStr"
@@ -10,13 +10,15 @@
         />
       </div>
 
-      <div class="list">
-        <ul>
+      <div class="list-wrapper">
+        <ul v-if="usersSlice.length">
           <user-item
             v-for="(user, index) in usersSlice"
             :key="`user#${index}`"
             :user="user"
           />
+
+          <infinite-loading spinner="spiral" @infinite="loadMore" />
         </ul>
       </div>
     </div>
@@ -33,29 +35,43 @@ export default {
       users: [],
       usersSlice: [],
       searchStr: '',
+      page: 1,
+      pageSize: 50,
     }
   },
   async fetch() {
     this.users = await fetch('/data/users.json').then((res) => res.json())
-    this.usersSlice = this.users.slice(0, 10)
+    this.usersSlice = this.users.slice(0, this.pageSize)
   },
   methods: {
     search() {
       const newSlice = []
 
       this.users.some((user) => {
-        if (
-          Object.keys(user).some((key) =>
-            user[key].toLowerCase().includes(this.searchStr.toLowerCase())
-          )
-        ) {
+        const containsSearchStr = Object.keys(user).some((key) =>
+          user[key].toLowerCase().includes(this.searchStr.toLowerCase())
+        )
+
+        if (containsSearchStr) {
           newSlice.push(user)
         }
 
-        return newSlice.length === 10
+        return newSlice.length === this.pageSize
       })
 
+      document.querySelector('.list-wrapper').scrollTo(0, 0)
       this.usersSlice = newSlice
+    },
+    loadMore($state) {
+      setTimeout(() => {
+        this.page++
+        const newPage = this.users.slice(
+          this.pageSize * (this.page - 1),
+          this.pageSize * this.page
+        )
+        this.usersSlice = [...this.usersSlice, ...newPage]
+        $state.loaded()
+      }, 500)
     },
   },
 }
@@ -71,7 +87,7 @@ export default {
   justify-content: center;
   padding: 20px;
 
-  .list-container {
+  .content-container {
     background-color: #fff;
     max-width: 564px;
     width: 100%;
@@ -79,6 +95,7 @@ export default {
     padding: 25px 12px 0 10px;
     overflow: hidden;
     position: relative;
+    flex-grow: 1;
 
     .input-wrapper {
       position: absolute;
@@ -118,7 +135,7 @@ export default {
       }
     }
 
-    .list {
+    .list-wrapper {
       height: 100%;
       overflow: auto;
       padding-right: 10px;
@@ -135,7 +152,7 @@ export default {
   @media screen and (max-width: 768px) {
     padding: 15px;
 
-    .list-container {
+    .content-container {
       margin: 0;
     }
   }
