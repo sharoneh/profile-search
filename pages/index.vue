@@ -169,19 +169,20 @@ export default {
       top: 0;
       left: 0;
       width: 100%;
-      padding: 19px 28px 0 12px;
+      padding: 1.1875em 1.75em 0 0.75em;
       z-index: 2;
+      font-size: 1rem;
 
       &:before {
         content: '';
-        height: 24px;
-        width: 24px;
+        height: 1.5em;
+        width: 1.5em;
         mask-image: url(/images/search.svg);
         background: #000;
         opacity: 0.54;
         position: absolute;
-        top: 31px;
-        left: 28px;
+        top: 1.9375em;
+        left: 1.75em;
       }
 
       .search-input {
@@ -190,10 +191,10 @@ export default {
         border: none;
         border-radius: 2px;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.24);
-        font-size: 24px;
-        line-height: 28px;
+        font-size: 1.5em;
+        line-height: 1.1667em;
         color: rgba(0, 0, 0, 0.75);
-        padding: 12px 10px 7px 50px;
+        padding: 0.5em 0.4167em 0.2917em 2.0833em;
         outline: none;
 
         &::-webkit-search-cancel-button {
@@ -210,7 +211,7 @@ export default {
       ul {
         margin: 0;
         padding: 0 2px;
-        padding-top: 62px;
+        padding-top: 3.875rem;
         list-style: none;
       }
 
@@ -228,6 +229,14 @@ export default {
 
     .content-container {
       margin: 0;
+
+      .input-wrapper {
+        font-size: 0.85rem;
+      }
+
+      .list-wrapper ul {
+        padding-top: 3.29375rem;
+      }
     }
   }
 }

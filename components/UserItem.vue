@@ -123,7 +123,7 @@ export default {
     }
 
     mark {
-      background-color: yellow;
+      background-color: #fff73b;
     }
 
     .user-info {
