@@ -2,13 +2,18 @@
   <div class="page-container">
     <div class="list-container">
       <div class="input-wrapper">
-        <input class="search-input" type="search" />
+        <input
+          v-model="searchStr"
+          class="search-input"
+          type="search"
+          @input="search"
+        />
       </div>
 
       <div class="list">
         <ul>
           <user-item
-            v-for="(user, index) in users"
+            v-for="(user, index) in usersSlice"
             :key="`user#${index}`"
             :user="user"
           />
@@ -26,11 +31,32 @@ export default {
   data() {
     return {
       users: [],
+      usersSlice: [],
+      searchStr: '',
     }
   },
   async fetch() {
-    const users = await fetch('/data/users.json').then((res) => res.json())
-    this.users = users.slice(0, 10)
+    this.users = await fetch('/data/users.json').then((res) => res.json())
+    this.usersSlice = this.users.slice(0, 10)
+  },
+  methods: {
+    search() {
+      const newSlice = []
+
+      this.users.some((user) => {
+        if (
+          Object.keys(user).some((key) =>
+            user[key].toLowerCase().includes(this.searchStr.toLowerCase())
+          )
+        ) {
+          newSlice.push(user)
+        }
+
+        return newSlice.length === 10
+      })
+
+      this.usersSlice = newSlice
+    },
   },
 }
 </script>
