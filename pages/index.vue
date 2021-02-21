@@ -13,12 +13,18 @@
       <div class="list-wrapper">
         <ul v-if="usersSlice.length">
           <user-item
-            v-for="(user, index) in usersSlice"
-            :key="`user#${index}`"
+            v-for="user in usersSlice"
+            :key="`user#${user.email}`"
             :user="user"
           />
 
-          <infinite-loading spinner="spiral" @infinite="loadMore" />
+          <infinite-loading
+            ref="infiniteLoadingRef"
+            spinner="spiral"
+            @infinite="loadMore"
+          >
+            <span slot="no-more" class="infinite-end">No more results.</span>
+          </infinite-loading>
         </ul>
       </div>
     </div>
@@ -35,6 +41,7 @@ export default {
       users: [],
       usersSlice: [],
       searchStr: '',
+      searchStopIndex: 0,
       page: 1,
       pageSize: 50,
     }
@@ -44,10 +51,14 @@ export default {
     this.usersSlice = this.users.slice(0, this.pageSize)
   },
   methods: {
-    search() {
+    /**
+     * Filter items that contain the searchStr from usersArr until result array length reaches pageSize
+     */
+    filterResults(usersArr) {
       const newSlice = []
+      let stopIndex = 0
 
-      this.users.some((user) => {
+      usersArr.some((user, index) => {
         const containsSearchStr = Object.keys(user).some((key) =>
           user[key].toLowerCase().includes(this.searchStr.toLowerCase())
         )
@@ -56,20 +67,60 @@ export default {
           newSlice.push(user)
         }
 
+        stopIndex = index + 1
         return newSlice.length === this.pageSize
       })
 
-      document.querySelector('.list-wrapper').scrollTo(0, 0)
-      this.usersSlice = newSlice
+      return [newSlice, stopIndex]
     },
+    /**
+     * Search listener
+     */
+    search() {
+      const [newSlice, stopIndex] = this.filterResults(this.users)
+
+      document.querySelector('.list-wrapper').scrollTo(0, 0)
+
+      this.page = 1
+      this.usersSlice = newSlice
+      this.searchStopIndex = stopIndex
+
+      if (this.$refs.infiniteLoadingRef) {
+        this.$refs.infiniteLoadingRef.stateChanger.reset()
+      }
+    },
+    /**
+     * Infinite scroll listener
+     */
     loadMore($state) {
       setTimeout(() => {
         this.page++
-        const newPage = this.users.slice(
-          this.pageSize * (this.page - 1),
-          this.pageSize * this.page
-        )
-        this.usersSlice = [...this.usersSlice, ...newPage]
+
+        if (!this.searchStr) {
+          const newPage = this.users.slice(
+            this.pageSize * (this.page - 1),
+            this.pageSize * this.page
+          )
+
+          if (newPage.length > 0) {
+            this.usersSlice = this.usersSlice.concat(newPage)
+          } else {
+            $state.complete()
+          }
+        } else {
+          // search from searchStopIndex
+          const [newSlice, stopIndex] = this.filterResults(
+            this.users.slice(this.searchStopIndex)
+          )
+
+          if (newSlice.length > 0) {
+            this.searchStopIndex += stopIndex
+            this.usersSlice = this.usersSlice.concat(newSlice)
+          } else {
+            $state.complete()
+          }
+        }
+
         $state.loaded()
       }, 500)
     },
@@ -145,6 +196,13 @@ export default {
         padding: 0 2px;
         padding-top: 62px;
         list-style: none;
+      }
+
+      .infinite-end {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
+        display: block;
       }
     }
   }
