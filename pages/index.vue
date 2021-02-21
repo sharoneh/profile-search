@@ -7,11 +7,11 @@
 
       <div class="list">
         <ul>
-          <user-item />
-          <user-item />
-          <user-item />
-          <user-item />
-          <user-item />
+          <user-item
+            v-for="(user, index) in users"
+            :key="`user#${index}`"
+            :user="user"
+          />
         </ul>
       </div>
     </div>
@@ -23,6 +23,15 @@ import UserItem from '@/components/UserItem'
 
 export default {
   components: { UserItem },
+  data() {
+    return {
+      users: [],
+    }
+  },
+  async fetch() {
+    const users = await fetch('/data/users.json').then((res) => res.json())
+    this.users = users.slice(0, 10)
+  },
 }
 </script>
 
@@ -57,7 +66,7 @@ export default {
         content: '';
         height: 24px;
         width: 24px;
-        mask-image: url(/assets/search.svg);
+        mask-image: url(/images/search.svg);
         background: #000;
         opacity: 0.54;
         position: absolute;

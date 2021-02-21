@@ -1,16 +1,21 @@
 <template>
   <li class="user-item">
-    <div class="user-avatar"></div>
+    <div
+      class="user-avatar"
+      :style="`background-image: url('${user.avatar}');`"
+    ></div>
 
     <div class="user-content">
       <div class="user-info">
-        <h2 class="name">Josie Waters</h2>
+        <div class="main-info">
+          <h2 class="name">{{ user.name }}</h2>
 
-        <h3 class="position">Investor Integration Supervisor</h3>
+          <p class="email">{{ user.email }}</p>
+        </div>
 
-        <p class="email">alex@fisherking.co</p>
+        <h3 class="title">{{ user.title }}</h3>
 
-        <address class="address">22745 O'Kon Parks, Ernsermouth</address>
+        <address class="address">{{ user.address }}, {{ user.city }}</address>
       </div>
 
       <button class="action">Mark as suitable</button>
@@ -21,6 +26,12 @@
 <script>
 export default {
   name: 'UserItem',
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
 }
 </script>
 
@@ -35,9 +46,12 @@ export default {
   overflow: hidden;
 
   .user-avatar {
-    background-color: #bbb;
-    max-width: 134px;
-    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 134px;
+    flex-shrink: 0;
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
   }
 
   .user-content {
@@ -55,14 +69,19 @@ export default {
       position: relative;
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
-      .name {
-        font-weight: normal;
-        font-size: 24px;
-        line-height: 32px;
-        color: rgba(0, 0, 0, 0.87);
+      .main-info {
+        display: flex;
+        justify-content: space-between;
+
+        .name {
+          font-weight: normal;
+          font-size: 24px;
+          line-height: 32px;
+          color: rgba(0, 0, 0, 0.87);
+        }
       }
 
-      .position,
+      .title,
       .address,
       .email {
         color: rgba(0, 0, 0, 0.543846);
@@ -70,14 +89,8 @@ export default {
         line-height: 20px;
       }
 
-      .position {
+      .title {
         font-weight: bold;
-      }
-
-      .email {
-        position: absolute;
-        top: 10px;
-        right: 9px;
       }
 
       .address {
