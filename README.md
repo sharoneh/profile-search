@@ -1,5 +1,5 @@
-# Users List
-Users list with stateful search using [Nuxt](https://nuxtjs.org/).
+# Profile Search App
+Profile search app using [Nuxt](https://nuxtjs.org/).
 
 ## Build Setup
 
