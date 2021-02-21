@@ -17,6 +17,8 @@
             :key="`user#${user.email}`"
             :user="user"
             :search-str="searchStr"
+            :suitable="suitableUsers.includes(user.email)"
+            :toggle-selection="toggleSelection"
           />
 
           <infinite-loading
@@ -41,6 +43,7 @@ export default {
     return {
       users: [],
       usersSlice: [],
+      suitableUsers: [],
       searchStr: '',
       searchStopIndex: 0,
       page: 1,
@@ -126,6 +129,17 @@ export default {
         $state.loaded()
       }, 500)
     },
+    /**
+     * Toggle user selection
+     */
+    toggleSelection(userEmail) {
+      if (this.suitableUsers.includes(userEmail)) {
+        const index = this.suitableUsers.indexOf(userEmail)
+        this.suitableUsers.splice(index, 1)
+      } else {
+        this.suitableUsers.push(userEmail)
+      }
+    },
   },
 }
 </script>
@@ -156,7 +170,7 @@ export default {
       left: 0;
       width: 100%;
       padding: 19px 28px 0 12px;
-      z-index: 1;
+      z-index: 2;
 
       &:before {
         content: '';

@@ -1,5 +1,5 @@
 <template>
-  <li class="user-item">
+  <li class="user-item" :class="{ suitable }">
     <div
       class="user-avatar"
       :style="`background-image: url('${user.avatar}');`"
@@ -21,12 +21,16 @@
         />
       </div>
 
-      <button class="action">Mark as suitable</button>
+      <button class="action" @click="() => toggleSelection(user.email)">
+        {{ suitable ? 'Skip selection' : 'Mark as suitable' }}
+      </button>
     </div>
   </li>
 </template>
 
 <script>
+/* eslint vue/no-v-html: 0 */
+
 export default {
   name: 'UserItem',
   props: {
@@ -36,6 +40,14 @@ export default {
     },
     searchStr: {
       type: String,
+      required: true,
+    },
+    suitable: {
+      type: Boolean,
+      required: true,
+    },
+    toggleSelection: {
+      type: Function,
       required: true,
     },
   },
@@ -64,8 +76,33 @@ export default {
   margin-bottom: 1.3125em;
   overflow: hidden;
   font-size: 1rem;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    transition: ease-out 0.3s;
+  }
+
+  &.suitable {
+    &:before {
+      border-color: #4765ff;
+      transition: ease-out 0.3s;
+    }
+
+    .user-content .user-info {
+      border-color: transparent;
+    }
+  }
 
   .user-avatar {
+    z-index: 1;
     background-color: rgba(0, 0, 0, 0.25);
     width: 8.375em;
     flex-shrink: 0;
@@ -75,6 +112,7 @@ export default {
   }
 
   .user-content {
+    z-index: 1;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
