@@ -63,9 +63,7 @@ export default {
     }
   },
   async mounted() {
-    this.users = await fetch('/profile-search/data/users.json').then((res) =>
-      res.json()
-    )
+    this.users = await fetch('/data/users.json').then((res) => res.json())
     if (this.searchParam) {
       this.search()
     } else {
@@ -195,7 +193,7 @@ export default {
         content: '';
         height: 1.5em;
         width: 1.5em;
-        mask-image: url(/profile-search/images/search.svg);
+        mask-image: url(/images/search.svg);
         background: #000;
         opacity: 0.54;
         position: absolute;

@@ -51,8 +51,8 @@ export default {
   build: {},
 
   // Deployment
-  target: 'static',
-  router: {
-    base: '/profile-search/'
-  }
+  // target: 'static',
+  // router: {
+  //   base: '/profile-search/'
+  // }
 }
