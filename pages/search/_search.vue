@@ -1,5 +1,5 @@
 <template>
-  <user-list-page />
+  <user-list-page :search-param="$route.params.search" />
 </template>
 
 <script>
