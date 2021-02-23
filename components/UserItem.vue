@@ -140,6 +140,7 @@ export default {
           font-size: 1.5em;
           line-height: 1.3333em;
           color: rgba(0, 0, 0, 0.87);
+          margin-right: 10px;
         }
       }
 
