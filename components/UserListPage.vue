@@ -62,7 +62,7 @@ export default {
       pageSize: 50,
     }
   },
-  async mounted() {
+  async created() {
     this.users = await fetch('/data/users.json').then((res) => res.json())
     if (this.searchParam) {
       this.search()
